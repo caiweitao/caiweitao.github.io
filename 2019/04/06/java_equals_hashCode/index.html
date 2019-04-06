@@ -9,7 +9,7 @@
   <title>Java中的equals和hashCode方法理解 | caiweitao blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：">
-<meta name="keywords" content="Java,开发">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java中的equals和hashCode方法理解">
 <meta property="og:url" content="https://caiweitao.github.io/2019/04/06/java_equals_hashCode/index.html">
@@ -18,7 +18,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://caiweitao.github.io/img/20170426222637610.bmp">
 <meta property="og:image" content="https://caiweitao.github.io/img/20170426223935199.bmp">
-<meta property="og:updated_time" content="2019-04-06T05:51:42.649Z">
+<meta property="og:updated_time" content="2019-04-06T12:49:08.554Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的equals和hashCode方法理解">
 <meta name="twitter:description" content="java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：">
@@ -63,11 +63,11 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/开发/">开发</a></li>
+				<li><a href="/categories/开发/">开发</a></li>
 	        
-				<li><a href="/tags/随笔/">随笔</a></li>
+				<li><a href="/categories/随笔/">随笔</a></li>
 	        
-				<li><a href="/archives/">归档</a></li>
+				<li><a href="/archives/">历史文章</a></li>
 	        
 			</ul>
 		</nav>
@@ -147,11 +147,11 @@
 				
 					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/开发/">开发</a></li>
+					<li style="width: 25%"><a href="/categories/开发/">开发</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/随笔/">随笔</a></li>
+					<li style="width: 25%"><a href="/categories/随笔/">随笔</a></li>
 		        
-					<li style="width: 25%"><a href="/archives/">归档</a></li>
+					<li style="width: 25%"><a href="/archives/">历史文章</a></li>
 		        
 				</ul>
 			</nav>
@@ -250,15 +250,22 @@ public boolean equals(Object obj) {
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">开发</a>
-        		</li>
       		
 		</ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/开发//" class="article-tag-list-link color3">开发</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -370,7 +377,8 @@ public boolean equals(Object obj) {
     		&copy; 2019 caiweitao
     	</div>
       	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+			<span id="busuanzi_container_site_pv">    本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+      		<!--<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten-->
       	</div>
     </div>
   </div>
@@ -451,10 +459,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">开发</a>
               </li>
             
             <div class="clearfix"></div>
