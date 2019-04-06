@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://caiweitao.github.io">
-  <title>caiweitao blog</title>
+  <title>Java中的equals和hashCode方法理解 | caiweitao blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="caiweitao blog">
-<meta property="og:url" content="https://caiweitao.github.io/index.html">
+  <meta name="description" content="java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：">
+<meta name="keywords" content="Java,开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的equals和hashCode方法理解">
+<meta property="og:url" content="https://caiweitao.github.io/2019/04/06/java_equals_hashCode/index.html">
 <meta property="og:site_name" content="caiweitao blog">
+<meta property="og:description" content="java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://caiweitao.github.io/img/20170426222637610.bmp">
+<meta property="og:image" content="https://caiweitao.github.io/img/20170426223935199.bmp">
+<meta property="og:updated_time" content="2019-04-06T05:51:42.649Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="caiweitao blog">
+<meta name="twitter:title" content="Java中的equals和hashCode方法理解">
+<meta name="twitter:description" content="java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：">
+<meta name="twitter:image" content="https://caiweitao.github.io/img/20170426222637610.bmp">
   
     <link rel="alternative" href="/atom.xml" title="caiweitao blog" type="application/atom+xml">
   
@@ -158,16 +166,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-java_equals_hashCode" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-java_equals_hashCode" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/06/java_equals_hashCode/">Java中的equals和hashCode方法理解</a>
+    <h1 class="article-title" itemprop="name">
+      Java中的equals和hashCode方法理解
     </h1>
   
 
@@ -180,12 +186,60 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：<br>
-        
+        <p>java Object类中有两个方法:equals和hashCode,所以每个对象都有这两个方法，这两个方法是用来同一类型做比较的。在实现特定需求的时候我们可以重写这两个方法，比如:在容器set存放同一类型时判断存进的对象是否重复。以下是对这两个方法的理解和总结：<br><a id="more"></a><br>equals()方法与hashCode()的通用协定是:<br>1 如果两个对象相等(equals),那么必须拥有相同的哈希码(hash code)<br>2 即使两个对象有相同的哈希值(hash code),他们不一定相等(equals).</p>
+<p>首先看一下Object中这两个方法的源码</p>
+<pre><code>/**
+ * Returns a hash code value for the object. This method is 
+ * supported for the benefit of hashtables such as those provided by 
+ */ 
+public native int hashCode();
+</code></pre><p>这个方法是原生函数,它返回的是对象的地址值。</p>
+<pre><code>/**
+ * Indicates whether some other object is &quot;equal to&quot; this one.
+  */
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+</code></pre><p>Object的equals比较的也是两个对象的地址值。<br>即 如果equals()相等，说明两个对象地址值也相等，当然hashcode() 也就相等了。</p>
+<p><img src="/img/20170426222637610.bmp" alt></p>
+<p>在这里hashCode就好比字典里每个字的索引，equals()好比比较的是字典里同一个字下的不同词语。就好像在字典里查“自”这个字下的两个词语“自己”、“自发”，如果用equals()判断查询的词语相等那么就是同一个词语，比如equals()比较的两个词语都是“自己”，那么此时hashCode()方法得到的值也肯定相等；如果用equals()方法比较的是“自己”和“自发”这两个词语，那么得到结果是不想等，但是这两个词都属于“自”这个字下的词语所以在查索引时相同，即：hashCode()相同。如果用equals()比较的是“自己”和“他们”这两个词语的话那么得到的结果也是不同的，此时hashCode() 得到也是不同的。</p>
+<p>同时hash算法对于查找元素提供了很高的效率</p>
+<p>如果想查找一个集合中是否包含有某个对象，大概的程序代码怎样写呢？<br>你通常是逐一取出每个元素与要查找的对象进行比较，当发现某个元素与要查找的对象进行equals方法比较的结果相等时，则停止继续查找并返回肯定的信息，否则，返回否定的信息，如果一个集合中有很多个元素，比如有一万个元素，并且没有包含要查找的对象时，则意味着你的程序需要从集合中取出一万个元素进行逐一比较才能得到结论。</p>
+<p>有人发明了一种哈希算法来提高从集合中查找元素的效率，这种方式将集合分成若干个存储区域，每个对象可以计算出一个哈希码，可以将哈希码分组(使用不同的hash函数来计算的)，每组分别对应某个存储区域，根据一个对象的哈希码就可以确定该对象应该存储在哪个区域。</p>
+<p><img src="/img/20170426223935199.bmp" alt></p>
+<p>想要查找对象g，根据该对象的哈希码(这里图中为234567)确定g在第二个区域,则只遍历第二个区域查找g对象而不需要全部遍历。</p>
+<p>HashSet就是采用哈希算法存取对象的集合，它内部采用对某个数字n进行取余(这种的hash函数是最简单的)的方式对哈希码进行分组和划分对象的存储区域；Object类中定义了一个hashCode()方法来返回每个Java对象的哈希码，当从HashSet集合中查找某个对象时，<strong>Java系统首先调用对象的hashCode()方法获得该对象的哈希码表，然后根据哈希吗找到相应的存储区域，最后取得该存储区域内的每个元素与该对象进行equals方法比较；</strong>这样就不用遍历集合中的所有元素就可以得到结论，可见，HashSet集合具有很好的对象检索性能，但是，HashSet集合存储对象的效率相对要低些，因为向HashSet集合中添加一个对象时，要先计算出对象的哈希码和根据这个哈希码确定对象在集合中的存放位置为了保证一个类的实例对象能在HashSet正常存储，要求这个类的两个实例对象用equals()方法比较的结果相等时，他们的哈希码也必须相等；也就是说，如果obj1.equals(obj2)的结果为true,那么以下表达式的结果也要为true:</p>
+<p>obj1.hashCode() == obj2.hashCode()</p>
+<p>换句话说：当我们重写一个对象的equals方法，就必须重写他的hashCode方法，不过不重写他的hashCode方法的话，Object对象中的hashCode方法始终返回的是一个对象的hash地址，而这个地址是永远不相等的。所以这时候即使是重写了equals方法，也不会有特定的效果的，因为hashCode方法如果都不想等的话，就不会调用equals方法进行比较了，所以没有意义了。</p>
+<p>如果一个类的hashCode()方法没有遵循上述要求，那么，当这个类的两个实例对象用equals()方法比较的结果相等时，他们本来应该无法被同时存储进set集合中，但是，如果将他们存储进HashSet集合中时，由于他们的hashCode()方法的返回值不同(Object中的hashCode方法返回值是永远不同的)，第二个对象首先按照哈希码计算可能被放进与第一个对象不同的区域中，这样，它就不可能与第一个对象进行equals方法比较了，也就可能被存储进HashSet集合中了，Object类中的hashCode()方法不能满足对象被存入到HashSet中的要求，因为它的返回值是通过对象的内存地址推算出来的，同一个对象在程序运行期间的任何时候返回的哈希值都是始终不变的，所以，只要是两个不同的实例对象，即使他们的equals方法比较结果相等，他们默认的hashCode方法的返回值是不同的。</p>
+<p>其实我们也可以看一下8种基本数据类型对应的对象类型和String类型的hashCode方法和equals方法。</p>
+<p>其中8中基本类型的hashCode很简单就是直接返回他们的数值大小，String对象是通过一个复杂的计算方式，但是这种计算方式能够保证，如果这个字符串的值相等的话，他们的hashCode就是相等的。8种基本类型的equals方法就是直接比较数值，String类型的equals方法是比较字符串的值的。</p>
+
       
 
       
-    </p></div>
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
     <div class="article-info article-info-index">
       
       
@@ -207,16 +261,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/06/java_equals_hashCode/">more >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://caiweitao.github.io/2019/04/06/java_equals_hashCode/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/06/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -236,72 +349,14 @@
 
 
 
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/06/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2019/04/06/hello-world/" class="archive-article-date">
-  	<time datetime="2019-04-05T17:15:33.460Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/06/hello-world/">more >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -324,8 +379,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
